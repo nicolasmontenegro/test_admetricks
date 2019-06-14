@@ -1,0 +1,23 @@
+version: '3'
+
+services:
+  db:
+    image: postgres
+
+  django:
+    build: ./code/django
+    command: bash -c "python manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ./code/django:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  node:
+    build: ./code/node
+    command: npm run dev
+    volumes:
+      - ./code/node:/node
+    ports:
+      - "0.0.0.0:3000:3000"
