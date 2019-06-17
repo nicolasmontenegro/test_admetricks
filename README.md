@@ -1,8 +1,8 @@
 # test_admetricks
 
-## Descipción
+## Descripción
 
-Este proyecto es una aplicación web para es vizualizar la variación diaria del dólar a Peso Chileno (CLP).
+Este proyecto es una aplicación web para es visualizar la variación diaria del dólar a Peso Chileno (CLP).
 Contiene servicios basados en Django, Nuxt y Postgres, cada uno contenido en un Docker propio que se orquesta a través de Docker-Compose.
 
 ## Dependencias
@@ -12,7 +12,9 @@ Contiene servicios basados en Django, Nuxt y Postgres, cada uno contenido en un 
 ## Instalación
 
 Una vez descomprimido/clonado el repo, inicializar a través de docker compose.
+
 `$ > docker-compose up`
+
 Esto inicializará los siguientes contenedores
 * test_admetricks_django
 * test_admetricks_node
@@ -20,8 +22,9 @@ Esto inicializará los siguientes contenedores
 
 Una vez construido, debe inicializar la base de datos aplicando las migraciones y levantando los datos.
 
-`$ > docker-compose run django python manage.py migrate
-docker-compose run django python manage.py seed --mode=refresh`
+`$ > docker-compose run django python manage.py migrate`
+
+`$ > docker-compose run django python manage.py seed --mode=refresh`
 
 ## Instrucciones de uso
 
