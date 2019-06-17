@@ -19,7 +19,8 @@
     "cross-env": "^5.2.0",
     "express": "^4.16.4",
     "nuxt": "^2.0.0",
-    "v-chart-plugin": "^1.0.1"
+    "v-chart-plugin": "^1.0.1",
+    "vuejs-datepicker": "^1.5.4"
   },
   "devDependencies": {
     "@vue/test-utils": "^1.0.0-beta.27",

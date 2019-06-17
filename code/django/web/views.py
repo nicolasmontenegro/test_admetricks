@@ -23,3 +23,11 @@ class GroupViewSet(viewsets.ModelViewSet):
 class DollarViewSet(viewsets.ModelViewSet):
     queryset = Dollar.objects.all()
     serializer_class = DollarSerializer
+
+    def get_queryset(self):
+        date_start = self.request.query_params.get('date_start', None)
+        date_end = self.request.query_params.get('date_end', None)
+        if date_start and date_end:
+            return self.queryset.filter(value_at__range=[date_start, date_end])
+        else:
+            return self.queryset
