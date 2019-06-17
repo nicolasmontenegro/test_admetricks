@@ -6,9 +6,7 @@ from decimal import *
 import datetime
 import requests
 
-
-
-# python manage.py seed --mode=refresh
+# python manage.py seed --mode=[refresh|clear|update]
 
 class Command(BaseCommand):
     help = "seed database for testing and development."
@@ -21,17 +19,35 @@ class Command(BaseCommand):
         run_seed(self, options['mode'])
         self.stdout.write('done.')
 
+def run_seed(self, mode):    
+    if mode == "clear":
+        clear_data(self)
+        return
+    elif mode == "refresh":
+        clear_data(self)
+        get_data(
+            self,
+            date(year=2018, month=1, day=1),
+            date.today())
+        return
+    elif mode == "update":
+        lastest_record = Dollar.objects.latest('value_at')
+        if lastest_record:
+            get_data(
+                self,
+                lastest_record.value_at + datetime.timedelta(days=1),
+                date.today())
+        return
+
 
 def clear_data(self):
     """Deletes all the table data"""
     self.stdout.write("Delete all data")
     Dollar.objects.all().delete()
 
-def get_data(self):
+def get_data(self, date_start, date_end):
     getcontext().prec = 2
 
-    date_end = date.today()
-    date_start = date(year=2019, month=1, day=1) 
     days_total = (date_end - date_start).days
 
     d_old = None
@@ -50,7 +66,7 @@ def get_data(self):
             if len(r_parsed["serie"]) == 1:
                 value = r_parsed["serie"][0]
 
-                delta = (float(d_old.value) - value["valor"]) if (d_old != None) else 0.0
+                delta = (value["valor"] - float(d_old.value)) if (d_old != None) else 0.0
 
                 d = Dollar(
                     value = Decimal(str(round(value["valor"], 2))),
@@ -67,16 +83,3 @@ def get_data(self):
                     print(e)
                     pass
 
-
-def run_seed(self, mode):
-    """ Seed database based on mode
-
-    :param mode: refresh / clear 
-    :return:
-    """
-    # Clear data from tables
-    clear_data(self)
-    if mode == "clear":
-        return
-
-    get_data(self)
